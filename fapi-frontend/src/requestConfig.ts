@@ -1,5 +1,4 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
-import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 
 // 错误处理方案： 错误类型
@@ -25,19 +24,9 @@ interface ResponseStructure {
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
  */
-export const requestConfig: {
-  baseURL: string;
-  responseInterceptors: ((response) => any)[];
-  requestInterceptors: ((config: IRequestOptions) => {
-    [p: string]: any;
-    responseInterceptors?: IResponseInterceptorTuple[];
-    skipErrorHandler?: boolean;
-    requestInterceptors?: IRequestInterceptorTuple[];
-    url: any
-  })[];
-  errorConfig: { errorThrower: (res) => void; errorHandler: (error: any, opts: any) => void }
-} = {
+export const requestConfig = {
   baseURL: 'http://localhost:8101',
+  withCredentials: true,
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     // 错误抛出
