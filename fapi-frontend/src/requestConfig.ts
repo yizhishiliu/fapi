@@ -37,7 +37,7 @@ export const requestConfig: {
   })[];
   errorConfig: { errorThrower: (res) => void; errorHandler: (error: any, opts: any) => void }
 } = {
-  baseURL: 'http://localhost:7529',
+  baseURL: 'http://localhost:8101',
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     // 错误抛出
