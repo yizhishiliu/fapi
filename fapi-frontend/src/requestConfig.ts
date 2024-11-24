@@ -10,6 +10,7 @@ enum ErrorShowType {
   NOTIFICATION = 3,
   REDIRECT = 9,
 }
+
 // 与后端约定的响应数据格式
 interface ResponseStructure {
   success: boolean;
@@ -24,7 +25,19 @@ interface ResponseStructure {
  * pro 自带的错误处理， 可以在这里做自己的改动
  * @doc https://umijs.org/docs/max/request#配置
  */
-export const errorConfig: RequestConfig = {
+export const requestConfig: {
+  baseURL: string;
+  responseInterceptors: ((response) => any)[];
+  requestInterceptors: ((config: IRequestOptions) => {
+    [p: string]: any;
+    responseInterceptors?: IResponseInterceptorTuple[];
+    skipErrorHandler?: boolean;
+    requestInterceptors?: IRequestInterceptorTuple[];
+    url: any
+  })[];
+  errorConfig: { errorThrower: (res) => void; errorHandler: (error: any, opts: any) => void }
+} = {
+  baseURL: 'http://localhost:7529',
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     // 错误抛出
