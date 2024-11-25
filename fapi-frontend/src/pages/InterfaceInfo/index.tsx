@@ -212,8 +212,8 @@ const TableList: React.FC = () => {
         request={
           async (params, sort: Record<string, SortOrder>, filter: Record<string, (string | number)[] | null>) => {
             const res: any = await listInterfaceInfoByPageUsingPost({
-                ...params
-              });
+              ...params
+            } as API.InterfaceInfoQueryRequest);
             if (res?.data) {
               return {
                 data: res?.data.records || [],
