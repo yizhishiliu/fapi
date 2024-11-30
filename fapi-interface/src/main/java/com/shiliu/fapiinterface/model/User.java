@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.shiliu.fapiinterface.demos.web;
+package com.shiliu.fapiinterface.model;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
