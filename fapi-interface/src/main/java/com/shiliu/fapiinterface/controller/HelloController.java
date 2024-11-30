@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author <a href="https://github.com/yizhishiliu">一之十六</a>
  */
-@Controller
+@RestController
 @RequestMapping("/hello")
 public class HelloController {
 
@@ -16,10 +16,10 @@ public class HelloController {
         return "hello" + name;
     }
 
-    @PostMapping("/")
-    public String helloByPost(@RequestParam String name) {
-        return "hello" + name;
-    }
+//    @PostMapping("/")
+//    public String helloByPost(@RequestParam String name) {
+//        return "hello" + name;
+//    }
 
     @PostMapping("/")
     public String helloByPost2(@RequestBody User user) {
