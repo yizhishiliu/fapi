@@ -10,4 +10,5 @@ import com.shiliu.fapiinterface.model.User;
 */
 public interface UserService extends IService<User> {
 
+    User checkAccessKey(String accessKey);
 }

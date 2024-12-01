@@ -57,9 +57,12 @@ public class FApiClient {
         // 一定不能直接发送密钥
 //        headers.put("secretKey", secretKey);
         headers.put("body", body);
-        headers.put("once", RandomUtil.randomNumbers(100));
+        // 随机数once，防止重放攻击
+        headers.put("nonce", RandomUtil.randomNumbers(4));
+        // 当前时间戳，用于防止请求被篡改
         headers.put("timestamp", String.valueOf(System.currentTimeMillis() / 1000));
-        headers.put("sign", genSign(headers.toString(), secretKey));
+        // 签名
+        headers.put("sign", genSign(body, secretKey));
         return headers;
     }
 }
