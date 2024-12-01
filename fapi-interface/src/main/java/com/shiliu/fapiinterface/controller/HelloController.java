@@ -1,8 +1,10 @@
 package com.shiliu.fapiinterface.controller;
 
-import com.shiliu.fapiinterface.model.User;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.shiliu.fapiinterface.model.User;
 
 /**
  * @author <a href="https://github.com/yizhishiliu">一之十六</a>
@@ -22,7 +24,9 @@ public class HelloController {
 //    }
 
     @PostMapping("/")
-    public String helloByPost2(@RequestBody User user) {
-        return "hello" + user.getName();
+    public String helloByPost2(@RequestBody User user, HttpServletRequest request) {
+        String accessKey = request.getHeader("accessKey");
+        String secretKey = request.getHeader("secretKey");
+        return "hello" + user.getUserName();
     }
 }

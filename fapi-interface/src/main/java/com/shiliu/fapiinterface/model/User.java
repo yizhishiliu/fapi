@@ -1,43 +1,90 @@
-/*
- * Copyright 2013-2018 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.shiliu.fapiinterface.model;
 
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.Date;
+
 /**
- * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>
+ * 用户
+ * @TableName user
  */
-public class User {
+@TableName(value ="user")
+@Data
+public class User implements Serializable {
+    /**
+     * id
+     */
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
-    private String name;
+    /**
+     * 账号
+     */
+    private String userAccount;
 
-    private Integer age;
+    /**
+     * 密码
+     */
+    private String userPassword;
 
-    public String getName() {
-        return name;
-    }
+    /**
+     * 微信开放平台id
+     */
+    private String unionId;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    /**
+     * 公众号openId
+     */
+    private String mpOpenId;
 
-    public Integer getAge() {
-        return age;
-    }
+    /**
+     * 用户昵称
+     */
+    private String userName;
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
+    /**
+     * 用户头像
+     */
+    private String userAvatar;
+
+    /**
+     * 用户简介
+     */
+    private String userProfile;
+
+    /**
+     * 用户角色：user/admin/ban
+     */
+    private String userRole;
+
+    /**
+     * accessKey
+     */
+    private String accessKey;
+
+    /**
+     * secretKey
+     */
+    private String secretKey;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
+     * 是否删除
+     */
+    @TableLogic
+    private Integer isDelete;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }
