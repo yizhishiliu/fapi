@@ -319,6 +319,6 @@ module.exports = {
   'POST /api/login/account': {
     status: 'ok',
     type: 'account',
-    currentAuthority: 'admin',
+    currentAuthority: 'Admin',
   },
 };

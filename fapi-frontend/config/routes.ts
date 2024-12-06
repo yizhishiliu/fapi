@@ -6,13 +6,13 @@ export default [
   },
   // { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
   // {
-  //   path: '/admin',
+  //   path: '/Admin',
   //   name: '管理页',
   //   icon: 'crown',
   //   access: 'canAdmin',
   //   routes: [
-  //     { path: '/admin', redirect: '/admin/sub-page' },
-  //     { path: '/admin/sub-page', name: '二级管理页', component: './Admin' },
+  //     { path: '/Admin', redirect: '/Admin/sub-page' },
+  //     { path: '/Admin/sub-page', name: '二级管理页', component: './Admin' },
   //   ],
   // },
   // { name: '查询表格', icon: 'table', path: '/list', component: './InterfaceInfo' },
@@ -24,8 +24,7 @@ export default [
     icon: 'crown',
     access: 'canAdmin',
     routes: [
-      { path: '/admin', redirect: '/admin/sub-page' },
-      { name: '接口管理', icon: 'table', path: '/admin/interface_info', component: './InterfaceInfo' },
+      { name: '接口管理', icon: 'table', path: '/admin/interface_info', component: './Admin/InterfaceInfo' },
     ],
   },
   { path: '*', layout: false, component: './404' },

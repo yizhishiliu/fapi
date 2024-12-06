@@ -161,7 +161,7 @@ const Login: React.FC = () => {
           />
 
           {status === 'error' && loginType === 'account' && (
-            <LoginMessage content={'错误的用户名和密码(admin/ant.design)'} />
+            <LoginMessage content={'错误的用户名和密码(Admin/ant.design)'} />
           )}
           {type === 'account' && (
             <>
@@ -171,7 +171,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                placeholder={'用户名: admin or user'}
+                placeholder={'用户名: Admin or user'}
                 rules={[
                   {
                     required: true,

@@ -68,10 +68,10 @@ describe('Login Page', () => {
 
     await rootContainer.findAllByText('Ant Design');
 
-    const userNameInput = await rootContainer.findByPlaceholderText('Username: admin or user');
+    const userNameInput = await rootContainer.findByPlaceholderText('Username: Admin or user');
 
     act(() => {
-      fireEvent.change(userNameInput, { target: { value: 'admin' } });
+      fireEvent.change(userNameInput, { target: { value: 'Admin' } });
     });
 
     const passwordInput = await rootContainer.findByPlaceholderText('Password: ant.design');
