@@ -100,3 +100,8 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.shiliu.fapi.controller
+# fapi-client-sdk
+fapi:
+  client:
+    access-key: shiliu
+    secret-key: aaAA1234

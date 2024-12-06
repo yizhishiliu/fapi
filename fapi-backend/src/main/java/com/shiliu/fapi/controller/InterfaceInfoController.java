@@ -2,10 +2,7 @@ package com.shiliu.fapi.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.shiliu.fapi.annotation.AuthCheck;
-import com.shiliu.fapi.common.BaseResponse;
-import com.shiliu.fapi.common.DeleteRequest;
-import com.shiliu.fapi.common.ErrorCode;
-import com.shiliu.fapi.common.ResultUtils;
+import com.shiliu.fapi.common.*;
 import com.shiliu.fapi.constant.UserConstant;
 import com.shiliu.fapi.exception.BusinessException;
 import com.shiliu.fapi.exception.ThrowUtils;
@@ -15,10 +12,13 @@ import com.shiliu.fapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.shiliu.fapi.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.shiliu.fapi.model.entity.InterfaceInfo;
 import com.shiliu.fapi.model.entity.User;
+import com.shiliu.fapi.model.enums.InterfaceInfoStatusEnum;
 import com.shiliu.fapi.model.vo.InterfaceInfoVO;
 import com.shiliu.fapi.service.InterfaceInfoService;
 import com.shiliu.fapi.service.UserService;
+import com.shiliu.fapiclientsdk.client.FApiClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +40,9 @@ public class InterfaceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private FApiClient fApiClient;
 
     // region 增删改查
 
@@ -165,7 +168,7 @@ public class InterfaceInfoController {
      */
     @PostMapping("/list/page/vo")
     public BaseResponse<Page<InterfaceInfoVO>> listInterfaceInfoVOByPage(@RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest,
-                                                               HttpServletRequest request) {
+                                                                         HttpServletRequest request) {
         long current = interfaceInfoQueryRequest.getCurrent();
         long size = interfaceInfoQueryRequest.getPageSize();
         // 限制爬虫
@@ -186,7 +189,7 @@ public class InterfaceInfoController {
      */
     @PostMapping("/my/list/page/vo")
     public BaseResponse<Page<InterfaceInfoVO>> listMyInterfaceInfoVOByPage(@RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest,
-                                                                 HttpServletRequest request) {
+                                                                           HttpServletRequest request) {
         ThrowUtils.throwIf(interfaceInfoQueryRequest == null, ErrorCode.PARAMS_ERROR);
         // 补充查询条件，只查询当前登录用户的数据
         User loginUser = userService.getLoginUser(request);
@@ -235,4 +238,62 @@ public class InterfaceInfoController {
     }
 
     // endregion
+
+    /**
+     * 发布接口（仅管理员可用）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 判断接口是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+        // 判断该接口是否可以调用 TODO
+        com.shiliu.fapiclientsdk.model.User user = new com.shiliu.fapiclientsdk.model.User();
+        user.setUserName("shiliu");
+        String userName = fApiClient.helloByPost2(user);
+        ThrowUtils.throwIf(StringUtils.isBlank(userName), ErrorCode.SYSTEM_ERROR, "接口不可用");
+        // 仅管理员可发布
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        // 操作数据库
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+        return ResultUtils.success(true);
+    }
+
+    /**
+     * 下线接口（仅管理员可用）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest, HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 判断接口是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+
+        // 仅管理员可发布
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        // 操作数据库
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+        return ResultUtils.success(true);
+    }
 }
