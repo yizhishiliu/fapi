@@ -1,10 +1,11 @@
 export default [
+  { path: '/', name: '首页', icon: 'smile', component: './Index' },
   {
     path: '/user',
     layout: false,
     routes: [{ name: '登录', path: '/user/login', component: './User/Login' }],
   },
-  // { path: '/welcome', name: '欢迎', icon: 'smile', component: './Welcome' },
+  // { path: '/welcome', name: '欢迎', icon: 'smile', component: './Index' },
   // {
   //   path: '/Admin',
   //   name: '管理页',
