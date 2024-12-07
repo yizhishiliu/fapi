@@ -39,19 +39,6 @@ const Index: React.FC = () => {
   useEffect(() => {
     loadData();
   }, []);
-  //
-  //     createTime?: string;
-  //     description?: string;
-  //     id?: number;
-  //     isDelete?: number;
-  //     method?: string;
-  //     name?: string;
-  //     requestHeader?: string;
-  //     responseHeader?: string;
-  //     status?: number;
-  //     updateTime?: string;
-  //     url?: string;
-  //     userId?: number;
   return <PageContainer title="API接口文档">
     <Card>
       {data ? (
