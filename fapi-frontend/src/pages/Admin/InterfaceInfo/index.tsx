@@ -247,7 +247,7 @@ const TableList: React.FC = () => {
           修改
         </a>,
         record.status === 0 ? <a
-          key="config"
+          key="online"
           onClick={() => {
             handleOnline(record);
           }}
@@ -257,7 +257,7 @@ const TableList: React.FC = () => {
         record.status === 1 ? <Button
           type="text"
           danger
-          key="config"
+          key="offline"
           onClick={() => {
             handleOffline(record);
           }}
