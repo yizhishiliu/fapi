@@ -1,15 +1,13 @@
 package com.shiliu.fapi.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.gson.Gson;
 import com.shiliu.fapi.annotation.AuthCheck;
 import com.shiliu.fapi.common.*;
 import com.shiliu.fapi.constant.UserConstant;
 import com.shiliu.fapi.exception.BusinessException;
 import com.shiliu.fapi.exception.ThrowUtils;
-import com.shiliu.fapi.model.dto.interfaceinfo.InterfaceInfoAddRequest;
-import com.shiliu.fapi.model.dto.interfaceinfo.InterfaceInfoEditRequest;
-import com.shiliu.fapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.shiliu.fapi.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
+import com.shiliu.fapi.model.dto.interfaceinfo.*;
 import com.shiliu.fapi.model.entity.InterfaceInfo;
 import com.shiliu.fapi.model.entity.User;
 import com.shiliu.fapi.model.enums.InterfaceInfoStatusEnum;
@@ -295,5 +293,36 @@ public class InterfaceInfoController {
         boolean result = interfaceInfoService.updateById(interfaceInfo);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(true);
+    }
+
+    /**
+     * 测试调用
+     *
+     * @param interfaceInfoInvokeRequest
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest, HttpServletRequest request) {
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 判断接口是否存在
+        long id = interfaceInfoInvokeRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+
+        // 判断接口是否已发布
+        ThrowUtils.throwIf(oldInterfaceInfo.getStatus() != InterfaceInfoStatusEnum.ONLINE.getValue(), ErrorCode.SYSTEM_ERROR, "接口未发布");
+
+        // 调用接口
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+        Gson gson = new Gson();
+        com.shiliu.fapiclientsdk.model.User user = gson.fromJson(interfaceInfoInvokeRequest.getUserRequestParams(), com.shiliu.fapiclientsdk.model.User.class);
+        // 新创建一个客户端，使用当前用户的akck，否则直接拿配置文件的akck去调用接口了
+        FApiClient tempApiClient = new FApiClient(accessKey, secretKey);
+        String result = tempApiClient.helloByPost2(user);
+        return ResultUtils.success(result);
     }
 }
