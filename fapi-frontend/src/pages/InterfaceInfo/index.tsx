@@ -57,6 +57,9 @@ const Index: React.FC = () => {
         ...values,
         id: Number(params.id),
       });
+      if (!res.data) {
+        return;
+      }
       setInvokeResult(res.data);
       message.success('调用成功！')
     } catch (e) {

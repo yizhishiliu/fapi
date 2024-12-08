@@ -320,6 +320,8 @@ public class InterfaceInfoController {
         String secretKey = loginUser.getSecretKey();
         Gson gson = new Gson();
         com.shiliu.fapiclientsdk.model.User user = gson.fromJson(interfaceInfoInvokeRequest.getUserRequestParams(), com.shiliu.fapiclientsdk.model.User.class);
+        // 校验参数是否合法
+        ThrowUtils.throwIf(user.getUserName() == null, ErrorCode.PARAMS_ERROR);
         // 新创建一个客户端，使用当前用户的akck，否则直接拿配置文件的akck去调用接口了
         FApiClient tempApiClient = new FApiClient(accessKey, secretKey);
         String result = tempApiClient.helloByPost2(user);
