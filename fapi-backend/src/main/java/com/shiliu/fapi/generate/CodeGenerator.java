@@ -29,9 +29,9 @@ public class CodeGenerator {
     public static void main(String[] args) throws TemplateException, IOException {
         // 指定生成参数
         String packageName = "com.shiliu.fapi";
-        String dataName = "接口信息";
-        String dataKey = "interfaceInfo";
-        String upperDataKey = "InterfaceInfo";
+        String dataName = "用户调用接口信息";
+        String dataKey = "userInterfaceInfo";
+        String upperDataKey = "UserInterfaceInfo";
 
         // 封装生成参数
         Map<String, Object> dataModel = new HashMap<>();
