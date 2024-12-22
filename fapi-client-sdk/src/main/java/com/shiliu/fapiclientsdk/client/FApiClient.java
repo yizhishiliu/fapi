@@ -18,6 +18,8 @@ import static com.shiliu.fapiclientsdk.utils.SignUtil.genSign;
  */
 public class FApiClient {
 
+    private static final String GATEWAY_URL = "http://127.0.0.1:8090";
+
     private String accessKey;
 
     private String secretKey;
@@ -30,19 +32,19 @@ public class FApiClient {
     public String helloByGet(String name) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        return HttpUtil.get("http://127.0.0.1:8123/api/hello/", paramMap);
+        return HttpUtil.get(GATEWAY_URL + "/api/hello/", paramMap);
     }
 
     public String helloByPost(String name) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        return HttpUtil.post("http://127.0.0.1:8123/api/hello/", paramMap);
+        return HttpUtil.post(GATEWAY_URL + "/api/hello/", paramMap);
     }
 
     public String helloByPost2(User user) {
         String json = JSONUtil.toJsonStr(user);
         return HttpRequest
-                .post("http://127.0.0.1:8123/api/hello/user")
+                .post(GATEWAY_URL + "/api/hello/user")
                 .addHeaders(getHeadersMap(json))
                 .body(json)
                 .execute()
