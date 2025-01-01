@@ -1,6 +1,5 @@
 package com.shiliu.fapicommon.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.shiliu.fapicommon.model.entity.User;
 
 
@@ -9,7 +8,7 @@ import com.shiliu.fapicommon.model.entity.User;
  *
  * @author <a href="https://github.com/yizhishiliu">一之十六</a>
  */
-public interface InnerUserService extends IService<User> {
+public interface InnerUserService {
 
     /**
      * 根据accessKey和secretKey查询是否已分配密钥（accessKey和secretKey）
