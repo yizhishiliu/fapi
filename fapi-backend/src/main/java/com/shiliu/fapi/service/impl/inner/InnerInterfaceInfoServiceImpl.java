@@ -19,6 +19,13 @@ public class InnerInterfaceInfoServiceImpl implements InnerInterfaceInfoService 
     @Resource
     private InterfaceInfoMapper interfaceInfoMapper;
 
+    /**
+     * 根据接口路径和请求方式查询接口是否存在
+     *
+     * @param url
+     * @param method
+     * @return
+     */
     @Override
     public InterfaceInfo getInterfaceInfo(String url, String method) {
         if (StringUtils.isAnyBlank(url, method)) {

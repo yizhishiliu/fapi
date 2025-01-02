@@ -19,6 +19,13 @@ public class InnerUserServiceImpl implements InnerUserService {
     @Resource
     private UserMapper userMapper;
 
+    /**
+     * 根据accessKey和secretKey查询是否已分配密钥（accessKey和secretKey）
+     *
+     * @param accessKey
+     * @param secretKey
+     * @return
+     */
     @Override
     public User getInvokeUser(String accessKey, String secretKey) {
         if (StringUtils.isAnyBlank(accessKey, secretKey)) {
