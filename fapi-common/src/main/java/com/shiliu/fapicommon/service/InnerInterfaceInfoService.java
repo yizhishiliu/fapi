@@ -12,9 +12,9 @@ public interface InnerInterfaceInfoService {
     /**
      * 根据接口路径和请求方式查询接口是否存在
      *
-     * @param path
+     * @param url
      * @param method
      * @return
      */
-    InterfaceInfo getInterfaceInfo(String path, String method);
+    InterfaceInfo getInterfaceInfo(String url, String method);
 }
