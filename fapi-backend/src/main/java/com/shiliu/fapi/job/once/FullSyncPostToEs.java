@@ -2,11 +2,12 @@ package com.shiliu.fapi.job.once;
 
 import com.shiliu.fapi.esdao.PostEsDao;
 import com.shiliu.fapi.model.dto.post.PostEsDTO;
-import com.shiliu.fapi.model.entity.Post;
 import com.shiliu.fapi.service.PostService;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+
+import com.shiliu.fapicommon.model.entity.Post;
 import lombok.extern.slf4j.Slf4j;
 import cn.hutool.core.collection.CollUtil;
 import org.springframework.boot.CommandLineRunner;

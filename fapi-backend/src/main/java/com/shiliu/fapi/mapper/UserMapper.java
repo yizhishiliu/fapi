@@ -1,7 +1,7 @@
 package com.shiliu.fapi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.shiliu.fapi.model.entity.User;
+import com.shiliu.fapicommon.model.entity.User;
 
 /**
  * 用户数据库操作

@@ -1,9 +1,10 @@
 package com.shiliu.fapi.mapper;
 
-import com.shiliu.fapi.model.entity.Post;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
+
+import com.shiliu.fapicommon.model.entity.Post;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

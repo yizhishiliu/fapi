@@ -1,8 +1,8 @@
 package com.shiliu.fapi.service;
 
-import com.shiliu.fapi.model.entity.PostThumb;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.shiliu.fapi.model.entity.User;
+import com.shiliu.fapicommon.model.entity.PostThumb;
+import com.shiliu.fapicommon.model.entity.User;
 
 /**
  * 帖子点赞服务

@@ -1,7 +1,8 @@
 package com.shiliu.fapi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.shiliu.fapi.model.entity.Post;
+import com.shiliu.fapicommon.model.entity.Post;
+
 import java.util.Date;
 import java.util.List;
 

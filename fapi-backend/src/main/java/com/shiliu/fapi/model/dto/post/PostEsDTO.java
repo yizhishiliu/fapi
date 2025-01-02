@@ -2,7 +2,7 @@ package com.shiliu.fapi.model.dto.post;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
-import com.shiliu.fapi.model.entity.Post;
+import com.shiliu.fapicommon.model.entity.Post;
 import lombok.Data;
 
 import org.apache.commons.lang3.StringUtils;

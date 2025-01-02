@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shiliu.fapi.common.ErrorCode;
 import com.shiliu.fapi.exception.BusinessException;
 import com.shiliu.fapi.mapper.PostThumbMapper;
-import com.shiliu.fapi.model.entity.Post;
-import com.shiliu.fapi.model.entity.PostThumb;
-import com.shiliu.fapi.model.entity.User;
 import com.shiliu.fapi.service.PostService;
 import com.shiliu.fapi.service.PostThumbService;
+
 import javax.annotation.Resource;
+
+import com.shiliu.fapicommon.model.entity.Post;
+import com.shiliu.fapicommon.model.entity.PostThumb;
+import com.shiliu.fapicommon.model.entity.User;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

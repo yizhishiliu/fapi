@@ -1,7 +1,8 @@
 package com.shiliu.fapi.service;
 
-import com.shiliu.fapi.model.entity.User;
 import javax.annotation.Resource;
+
+import com.shiliu.fapicommon.model.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

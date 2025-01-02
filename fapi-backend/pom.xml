@@ -19,6 +19,11 @@
         <dubbo.version>3.3.0</dubbo.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.shiliu</groupId>
+            <artifactId>fapi-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
         <!-- https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/reference-manual/registry/nacos/ -->
         <dependency>
             <groupId>org.apache.dubbo</groupId>

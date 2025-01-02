@@ -11,16 +11,18 @@ import com.shiliu.fapi.constant.CommonConstant;
 import com.shiliu.fapi.exception.BusinessException;
 import com.shiliu.fapi.mapper.UserMapper;
 import com.shiliu.fapi.model.dto.user.UserQueryRequest;
-import com.shiliu.fapi.model.entity.User;
-import com.shiliu.fapi.model.enums.UserRoleEnum;
-import com.shiliu.fapi.model.vo.LoginUserVO;
-import com.shiliu.fapi.model.vo.UserVO;
 import com.shiliu.fapi.service.UserService;
 import com.shiliu.fapi.utils.SqlUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import com.shiliu.fapicommon.model.entity.User;
+import com.shiliu.fapicommon.model.enums.UserRoleEnum;
+import com.shiliu.fapicommon.model.vo.LoginUserVO;
+import com.shiliu.fapicommon.model.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import org.apache.commons.lang3.StringUtils;

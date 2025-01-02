@@ -1,7 +1,7 @@
 package com.shiliu.fapi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.shiliu.fapi.model.entity.UserInterfaceInfo;
+import com.shiliu.fapicommon.model.entity.UserInterfaceInfo;
 
 /**
 * @author ada

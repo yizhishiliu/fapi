@@ -1,7 +1,7 @@
 package com.shiliu.fapi.mapper;
 
-import com.shiliu.fapi.model.entity.PostThumb;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.shiliu.fapicommon.model.entity.PostThumb;
 
 /**
  * 帖子点赞数据库操作

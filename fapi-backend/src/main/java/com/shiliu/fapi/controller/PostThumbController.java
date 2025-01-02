@@ -5,11 +5,12 @@ import com.shiliu.fapi.common.ErrorCode;
 import com.shiliu.fapi.common.ResultUtils;
 import com.shiliu.fapi.exception.BusinessException;
 import com.shiliu.fapi.model.dto.postthumb.PostThumbAddRequest;
-import com.shiliu.fapi.model.entity.User;
 import com.shiliu.fapi.service.PostThumbService;
 import com.shiliu.fapi.service.UserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import com.shiliu.fapicommon.model.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

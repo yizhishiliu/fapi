@@ -8,13 +8,14 @@ import com.shiliu.fapi.constant.FileConstant;
 import com.shiliu.fapi.exception.BusinessException;
 import com.shiliu.fapi.manager.CosManager;
 import com.shiliu.fapi.model.dto.file.UploadFileRequest;
-import com.shiliu.fapi.model.entity.User;
-import com.shiliu.fapi.model.enums.FileUploadBizEnum;
 import com.shiliu.fapi.service.UserService;
 import java.io.File;
 import java.util.Arrays;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import com.shiliu.fapicommon.model.entity.User;
+import com.shiliu.fapicommon.model.enums.FileUploadBizEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -9,13 +9,13 @@ import com.shiliu.fapi.constant.CommonConstant;
 import com.shiliu.fapi.exception.ThrowUtils;
 import com.shiliu.fapi.mapper.InterfaceInfoMapper;
 import com.shiliu.fapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.shiliu.fapi.model.entity.InterfaceInfo;
-import com.shiliu.fapi.model.entity.User;
-import com.shiliu.fapi.model.vo.InterfaceInfoVO;
-import com.shiliu.fapi.model.vo.UserVO;
 import com.shiliu.fapi.service.InterfaceInfoService;
 import com.shiliu.fapi.service.UserService;
 import com.shiliu.fapi.utils.SqlUtils;
+import com.shiliu.fapicommon.model.entity.InterfaceInfo;
+import com.shiliu.fapicommon.model.entity.User;
+import com.shiliu.fapicommon.model.vo.InterfaceInfoVO;
+import com.shiliu.fapicommon.model.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,7 @@ public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, I
      * 校验数据
      *
      * @param interfaceInfo
-     * @param add      对创建的数据进行校验
+     * @param add           对创建的数据进行校验
      */
     @Override
     public void validInterfaceInfo(InterfaceInfo interfaceInfo, boolean add) {

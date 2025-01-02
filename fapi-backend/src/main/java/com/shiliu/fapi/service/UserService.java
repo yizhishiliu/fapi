@@ -3,11 +3,13 @@ package com.shiliu.fapi.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.shiliu.fapi.model.dto.user.UserQueryRequest;
-import com.shiliu.fapi.model.entity.User;
-import com.shiliu.fapi.model.vo.LoginUserVO;
-import com.shiliu.fapi.model.vo.UserVO;
+
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import com.shiliu.fapicommon.model.entity.User;
+import com.shiliu.fapicommon.model.vo.LoginUserVO;
+import com.shiliu.fapicommon.model.vo.UserVO;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 /**
