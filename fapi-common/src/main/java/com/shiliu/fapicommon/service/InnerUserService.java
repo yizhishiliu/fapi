@@ -11,11 +11,10 @@ import com.shiliu.fapicommon.model.entity.User;
 public interface InnerUserService {
 
     /**
-     * 根据accessKey和secretKey查询是否已分配密钥（accessKey和secretKey）
+     * 根据accessKey查询是否已分配密钥
      *
      * @param accessKey
-     * @param secretKey
      * @return
      */
-    User getInvokeUser(String accessKey, String secretKey);
+    User getInvokeUser(String accessKey);
 }
