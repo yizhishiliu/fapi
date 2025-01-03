@@ -1,7 +1,13 @@
 package com.shiliu.fapigateway.filter;
 
 import com.shiliu.fapiclientsdk.utils.SignUtil;
+import com.shiliu.fapicommon.model.entity.InterfaceInfo;
+import com.shiliu.fapicommon.model.entity.User;
+import com.shiliu.fapicommon.service.InnerInterfaceInfoService;
+import com.shiliu.fapicommon.service.InnerUserInterfaceInfoService;
+import com.shiliu.fapicommon.service.InnerUserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -10,6 +16,7 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -31,6 +38,15 @@ import java.util.List;
 @Component
 public class CustomGlobalFilter implements GlobalFilter, Ordered {
 
+    @DubboReference
+    private InnerUserService innerUserService;
+
+    @DubboReference
+    private InnerInterfaceInfoService innerInterfaceInfoService;
+
+    @DubboReference
+    private InnerUserInterfaceInfoService innerUserInterfaceInfoService;
+
     // ip白名单
     private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1");
 
@@ -39,8 +55,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         // 1. 请求日志
         ServerHttpRequest request = exchange.getRequest();
         log.info("请求唯一标识：{}", request.getId());
-        log.info("请求路径：{}", request.getURI());
-        log.info("请求方法：{}", request.getMethod());
+//        log.info("请求路径：{}", request.getURI());
+        String path = request.getPath().value();
+        log.info("请求路径：{}", path);
+        String method = request.getMethod().toString();
+        log.info("请求方法：{}", method);
         log.info("请求参数：{}", request.getQueryParams());
         HttpHeaders headers = request.getHeaders();
         log.info("请求头：{}", headers);
@@ -59,13 +78,9 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         String timestamp = headers.getFirst("timestamp");
         String sign = headers.getFirst("sign");
         String body = headers.getFirst("body");
-        // 查询数据库，验证accessKey是否已分配
-        assert accessKey != null;
-        if (!accessKey.equals("shiliu")) {
-            return handleNoAuth(response);
-        }
+
         // 验证nonce是否已使用
-        // todo redis存储使用过的nonce，验证是否已使用(这里简单校验一下小于4位数）
+        // 其他方案：redis存储使用过的nonce，验证是否已使用(这里简单校验一下小于4位数）
         assert nonce != null;
         if (Long.parseLong(nonce) > 10000) {
             return handleNoAuth(response);
@@ -75,22 +90,42 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         if (Long.parseLong(timestamp) > System.currentTimeMillis() + 5 * 60 * 1000) {
             return handleNoAuth(response);
         }
-        // 验证sign是否正确
+
+        // 验证accessKey是否已分配
+        User invokeUser = null;
+        try {
+            invokeUser = innerUserService.getInvokeUser(accessKey);
+        } catch (Exception e) {
+            log.error("getInvokeUser error", e);
+        }
+        if (invokeUser == null) {
+            return handleNoAuth(response);
+        }
         // 从数据库中查询accessKey对应的secretKey
-        String gennedSign = SignUtil.genSign(body, "aaAA1234");
-        assert sign != null;
-        if (!sign.equals(gennedSign)) {
+        String secretKey = invokeUser.getSecretKey();
+        if (secretKey == null) {
+            return handleNoAuth(response);
+        }
+        // 验证sign是否正确
+        String genSign = SignUtil.genSign(body, secretKey);
+        if (sign == null || !sign.equals(genSign)) {
             return handleNoAuth(response);
         }
 
         // 4. 请求的模拟接口是否存在
-        // todo 查询数据库，验证请求的接口是否存在
-
-        // 5. 请求转发，调用模拟接口
-        chain.filter(exchange);
+        // 查询数据库，验证请求的接口是否存在
+        InterfaceInfo serviceInterfaceInfo = null;
+        try {
+            serviceInterfaceInfo = innerInterfaceInfoService.getInterfaceInfo(path, method);
+        } catch (Exception e) {
+            log.error("getInterfaceInfo error", e);
+        }
+        if (serviceInterfaceInfo == null) {
+            return handleNoAuth(response);
+        }
 
         // 6. 响应日志
-        return handleResponse(exchange, chain);
+        return handleResponse(exchange, chain, serviceInterfaceInfo.getId(), invokeUser.getId());
     }
 
     @Override
@@ -105,7 +140,7 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
      * @param chain
      * @return
      */
-    public Mono<Void> handleResponse(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono<Void> handleResponse(ServerWebExchange exchange, GatewayFilterChain chain, long interfaceInfoId, long invokeUserId) {
         try {
             // 获取原始的响应对象
             ServerHttpResponse originalResponse = exchange.getResponse();
@@ -132,8 +167,13 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
                             // (这里就理解为它在拼接字符串,它把缓冲区的数据取出来，一点一点拼接好)
                             return super.writeWith(
                                     fluxBody.map(dataBuffer -> {
-                                        // 7. 调用成功，接口调用次数+1
-                                        // todo backend接口调用次数+1
+
+                                        // 5. 请求转发，调用模拟接口，调用成功，接口调用次数+1
+                                        try {
+                                            innerUserInterfaceInfoService.invokeCount(interfaceInfoId, invokeUserId);
+                                        } catch (Exception e) {
+                                            log.error("invokeCount error", e);
+                                        }
 
                                         // 读取响应体的内容并转换为字节数组
                                         byte[] content = new byte[dataBuffer.readableByteCount()];
