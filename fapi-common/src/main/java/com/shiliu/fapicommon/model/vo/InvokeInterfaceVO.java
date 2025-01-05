@@ -16,7 +16,7 @@ public class InvokeInterfaceVO extends InterfaceInfo {
     /**
      * 接口调用次数
      */
-    private Integer totalCount;
+    private Integer totalTimes;
 
     private static final long serialVersionUID = 1L;
 }
