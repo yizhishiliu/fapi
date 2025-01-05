@@ -50,20 +50,21 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
     // ip白名单
     private static final List<String> IP_WHITE_LIST = Arrays.asList("127.0.0.1");
 
+    private static final String INTERFACE_HOST = "http://127.0.0.1:8123";
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         // 1. 请求日志
         ServerHttpRequest request = exchange.getRequest();
-        log.info("请求唯一标识：{}", request.getId());
-//        log.info("请求路径：{}", request.getURI());
-        String path = request.getPath().value();
-        log.info("请求路径：{}", path);
+        String path = INTERFACE_HOST + request.getPath().value();
         String method = request.getMethod().toString();
+        HttpHeaders headers = request.getHeaders();
+        String sourceAddress = request.getRemoteAddress().getAddress().getHostAddress();
+        log.info("请求唯一标识：{}", request.getId());
+        log.info("请求路径：{}", path);
         log.info("请求方法：{}", method);
         log.info("请求参数：{}", request.getQueryParams());
-        HttpHeaders headers = request.getHeaders();
         log.info("请求头：{}", headers);
-        String sourceAddress = request.getRemoteAddress().getAddress().getHostAddress();
         log.info("请求来源地址：{}", sourceAddress);
 
         // 2. 黑白名单
