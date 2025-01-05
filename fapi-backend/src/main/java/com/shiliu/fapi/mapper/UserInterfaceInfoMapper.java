@@ -13,6 +13,7 @@ import java.util.List;
  */
 public interface UserInterfaceInfoMapper extends BaseMapper<UserInterfaceInfo> {
 
+    // 查询用户调用的接口信息，按调用次数降序排序
     List<UserInterfaceInfo> listInvokeTopInterfaceInfo(int limit);
 }
 
