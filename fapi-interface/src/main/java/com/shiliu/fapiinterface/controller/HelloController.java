@@ -34,36 +34,36 @@ public class HelloController {
 
     @PostMapping("/user")
     public String helloByPost2(@RequestBody User user, HttpServletRequest request) {
-        String accessKey = request.getHeader("accessKey");
-        String nonce = request.getHeader("nonce");
-        String timestamp = request.getHeader("timestamp");
-        String sign = request.getHeader("sign");
-        String body = request.getHeader("body");
-
-        // 查询数据库，验证accessKey是否已分配
-        User accessUser = userService.checkAccessKey(accessKey);
-        if (accessUser == null) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
-        }
-
-        // 验证nonce是否已使用
-        // todo redis存储使用过的nonce，验证是否已使用(这里简单校验一下小于4位数）
-        if (Long.parseLong(nonce) > 10000) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
-        }
-
-        // 验证timestamp是否过期（不超过当前时间5分钟）
-        if (Long.parseLong(timestamp) > System.currentTimeMillis() + 5 * 60 * 1000) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
-        }
-
-        // 验证sign是否正确
-        // 从数据库中查询accessKey对应的secretKey
-        String secretKey = accessUser.getSecretKey();
-        String gennedSign = genSign(body, secretKey);
-        if (!sign.equals(gennedSign)) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
-        }
+//        String accessKey = request.getHeader("accessKey");
+//        String nonce = request.getHeader("nonce");
+//        String timestamp = request.getHeader("timestamp");
+//        String sign = request.getHeader("sign");
+//        String body = request.getHeader("body");
+//
+//        // 查询数据库，验证accessKey是否已分配
+//        User accessUser = userService.checkAccessKey(accessKey);
+//        if (accessUser == null) {
+//            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
+//        }
+//
+//        // 验证nonce是否已使用
+//        // todo redis存储使用过的nonce，验证是否已使用(这里简单校验一下小于4位数）
+//        if (Long.parseLong(nonce) > 10000) {
+//            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
+//        }
+//
+//        // 验证timestamp是否过期（不超过当前时间5分钟）
+//        if (Long.parseLong(timestamp) > System.currentTimeMillis() + 5 * 60 * 1000) {
+//            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
+//        }
+//
+//        // 验证sign是否正确
+//        // 从数据库中查询accessKey对应的secretKey
+//        String secretKey = accessUser.getSecretKey();
+//        String gennedSign = genSign(body, secretKey);
+//        if (!sign.equals(gennedSign)) {
+//            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "无权限");
+//        }
         return "hello" + user.getUserName();
     }
 }
