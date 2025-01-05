@@ -21,4 +21,10 @@
         totalTimes,remainingTimes,status,
         isDelete,createTime,updateTime
     </sql>
+    <select id="listInvokeTopInterfaceInfo" resultType="com.shiliu.fapicommon.model.entity.UserInterfaceInfo">
+        select interfaceInfoId, sum(totalTimes) as totalTimes
+        from user_interface_info
+        group by interfaceInfoId
+        order by totalTimes desc limit #{limit};
+    </select>
 </mapper>
